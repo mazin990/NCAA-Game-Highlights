@@ -133,3 +133,10 @@ Images\image-1.png
 ```
 3- Copy content of same file from Github and replaced for file in local and replace nessary.(copy $ paste)
 Example 
+
+Step 4: Update .env file
+- RapidAPI_KEY: Ensure that you have successfully created the account and select "Subscribe To Test" in the top left of the Sports Highlights API
+- AWS_ACCESS_KEY_ID=your_aws_access_key_id_here
+- AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key_here
+- S3_BUCKET_NAME=your_S3_bucket_name_here
+- MEDIACONVERT_ENDPOINT=https://your_mediaconvert_endpoint_here.amazonaws.com
