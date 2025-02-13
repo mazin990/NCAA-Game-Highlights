@@ -66,4 +66,70 @@ aws secretsmanager create-secret \
     --secret-string '{"api_key":"YOUR_ACTUAL_API_KEY"}' \
     --region us-east-1
 ```
+### Step 3: Create an IAM role or user
+1.	In the search bar, type "IAM".
+2.	Click Roles -> Create Role.
+3.	For the Use Case, enter "S3" and click next.
+4.	Under Add Permission, search for and add:
+    - AmazonS3FullAccess
+	- MediaConvertFullAccess
+	- AmazonEC2ContainerRegistryFullAccess
+Click next.
+1.	Under Role Details, enter "HighlightProcessorRole" as the name.
+2.	Select Create Role.
+3.	Find the role in the list and click on it.
+4.	Under Trust relationships, edit the trust policy as follows:
 
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": [
+          "ec2.amazonaws.com",
+          "ecs-tasks.amazonaws.com",
+          "mediaconvert.amazonaws.com"
+        ],
+        "AWS": "arn:aws:iam::<"your-account-id">:user/<"your-iam-user">"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+```
+![alt text](image.png)
+
+### Step 4: create an S3 bucket using AWS CloudShell with the AWS CLI.
+
+- Open AWS CloudShell, Go to the AWS Management Console,Launch CloudShell.
+
+- Configure AWS CLI (if not already configured).
+
+- Create an S3 Bucket:
+ ```
+ aws s3api create-bucket --bucket <your-unique-bucket-name> --region <your-region>
+```
+
+- Verify Bucket Creation:
+```
+aws s3 ls
+```
+Images\image-1.png
+![alt text](image-1.png)
+
+### Step 5: Set Up Project (CloudShell)
+
+1- Create the Projects Directory: 
+```
+  mkdir game-highlight-processor
+  cd  game-highlight-processor
+```
+
+2- Create nessory file  
+```
+ touch Dokerfile fetch.py requirement.txt process_one_video.py mediaconvert_process.py run_all.py
+```
+3- Copy content of same file from Github and replaced for file in local and replace nessary.(copy $ paste)
+Example 
