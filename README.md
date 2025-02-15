@@ -138,15 +138,18 @@ aws s3 ls
 - AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key_here
 - S3_BUCKET_NAME=your_S3_bucket_name_here
 - MEDIACONVERT_ENDPOINT=https://your_mediaconvert_endpoint_here.amazonaws.com
-  ```
+  
+```
 aws mediaconvert describe-endpoints
-  ```
+```
 ### Step 7: Secure .env file  (CloudShell)
+
 ```
 chmod 600 .env
 ```
 
 ### Step 6: Locally Buikd & Run The Docker Container
+
 ```
 docker build -t highlight-processor .
 ```
@@ -154,10 +157,13 @@ docker build -t highlight-processor .
 ![image](https://github.com/user-attachments/assets/4337a19d-7a73-4cee-9f3f-cbd7e78bb0b4)
 
 - Run the Docker Container Locally:
+
 ```
 docker run --env-file .env highlight-processor
 ```
 ![image](https://github.com/user-attachments/assets/d390ef41-0401-4c40-9ce5-8e26bcb958fe)
+
+This will run fetch.py, process_one_video.py and mediaconvert_process.py and the following files should be saved in your S3 bucket
 
 ![image](https://github.com/user-attachments/assets/e422a002-a3e9-4563-a3ab-afcb12e4c22d)
 
