@@ -50,7 +50,8 @@ parameter you should copy (x-rapidapi-key)
 ```
 Once you have these prerequisites, you can start setting up your project by cloning the repository, configuring your environment, and deploying your infrastructure using Terraform.
 
-## START HERE - Local
+## Part 1: START HERE - Local
+
 ### Step 1: Clone The Repo
 
 ```
@@ -171,7 +172,47 @@ This will run fetch.py, process_one_video.py and mediaconvert_process.py and the
 
 ![image](https://github.com/user-attachments/assets/3897d736-41d0-4121-ac9d-4a07a16f17e9)
 
-Delete all resources
-
+### Step 7: Empty bucket and deleted 
 
 ![image](https://github.com/user-attachments/assets/149a5b95-e587-4f21-b53a-8cdb61b1474d)
+
+
+## Part 2: Terraform (IAC) 
+
+### Step 1: Setup terraform.tfvars File
+
+ 1.  Copy all contents of the resources folder from the GitHub repository.
+ 2. In AWS CloudShell or VS Code terminal, create a new file named vpc_setup.sh.
+ 3. Paste the provided script into vpc_setup.sh.
+ 4. Run the vpc_setup.sh script.
+
+  ```
+ bash vpc_setup.sh
+  ```
+ ![alt text](image.png)
+
+ 5. You will see variables in the output, paste these variables into lines 8-13.
+ 6. Store your API key in AWS Secrets Manager
+
+  ```
+  aws ssm put-parameter \
+  --name "/myproject/rapidapi_key" \
+  --value "YOUR_SECRET_KEY" \
+  --type SecureString
+  ```
+  ![alt text](image-1.png)
+
+ 7. Run the following script to obtain your mediaconvert_endpoint:
+
+ ```
+ aws mediaconvert describe-endpoints --query "Endpoints[0].Url" --output text
+ ```
+ 8. Leave the mediaconvert_role_arn string empty
+
+#### Helpful Tip for Beginners:
+
+Use the same region, project, S3 Bucketname and ECR Repo name to make following along easier. Certain steps like pushing the docker image to the ECR repo is easier to copy and paste without remember what you named your repo
+
+### Step 2: Run The Project
+
+Navigate to the terraform folder/workspace in VS Code From the src folder
