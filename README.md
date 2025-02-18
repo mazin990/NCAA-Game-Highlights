@@ -149,7 +149,7 @@ aws mediaconvert describe-endpoints
 chmod 600 .env
 ```
 
-### Step 6: Locally Buikd & Run The Docker Container
+### Step 8: Locally Buikd & Run The Docker Container
 
 ```
 docker build -t highlight-processor .
@@ -172,7 +172,7 @@ This will run fetch.py, process_one_video.py and mediaconvert_process.py and the
 
 ![image](https://github.com/user-attachments/assets/3897d736-41d0-4121-ac9d-4a07a16f17e9)
 
-### Step 7: Empty bucket and deleted 
+### Step 9: Empty bucket and deleted 
 
 ![image](https://github.com/user-attachments/assets/149a5b95-e587-4f21-b53a-8cdb61b1474d)
 
@@ -215,4 +215,84 @@ Use the same region, project, S3 Bucketname and ECR Repo name to make following 
 
 ### Step 2: Run The Project
 
-Navigate to the terraform folder/workspace in VS Code From the src folder
+### Step 2: Run The Project
+
+1. Navigate to the terraform folder/workspace in VS Code From the src folder
+
+  ```
+  cd terraform
+  ```
+2. Initialize terraform working directory
+
+  ```
+  terraform init
+  ```
+![image](https://github.com/user-attachments/assets/f3912f2d-8166-4919-9428-b630a2c6c39f)
+
+3. Check syntax and validity of your Terraform configuration files
+
+  ```
+  terraform validate
+  ```
+![image](https://github.com/user-attachments/assets/7969e18e-ebf7-4987-abf9-ee9ade4bfafb)
+
+4. Display execution plan for the terraform configuration
+
+  ```
+  terraform plan
+  ```
+![image](https://github.com/user-attachments/assets/be49df35-51f7-4c4a-a460-749753cbed7e)
+
+![image](https://github.com/user-attachments/assets/e8ddf771-ece3-4292-8eb8-9649514ac162)
+
+5. Apply changes to the desired state
+
+  ```
+  terraform apply -var-file="terraform.dev.tfvars"
+  ```
+![image](https://github.com/user-attachments/assets/4850ce89-9597-41b1-b40d-51d22e9f9efa)
+
+6. Create an ECR Repo
+
+  ```
+  aws ecr create-repository --repository-name highlight-pipeline
+  ```
+
+![image](https://github.com/user-attachments/assets/9b16f8c3-73e5-462d-a5e4-79cc8e75d2c8)
+
+7. Log into ECR
+
+  ```
+  aws ecr get-login-password --region us-east-1 | \
+  docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
+  ```
+
+  ```
+  docker push <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/highlight-pipeline:latest
+  ```
+
+### Step 3: Destroy ECS and ECR resources
+In the AWS Cloudshell or vs code terminal, create the file ncaaprojectcleanup.sh and paste the script inside from the resources folder.
+
+- Run the script
+
+```
+bash ncaaprojectcleanup.sh
+```
+
+### Review Video Files
+Navigate to the S3 Bucket and confirm there is a json video in the highlights folder and a video in the videos folder
+
+
+![image](https://github.com/user-attachments/assets/e422a002-a3e9-4563-a3ab-afcb12e4c22d)
+
+![image](https://github.com/user-attachments/assets/2a42a234-2e58-4405-8d47-6f2765864e95)
+
+![image](https://github.com/user-attachments/assets/3897d736-41d0-4121-ac9d-4a07a16f17e9)
+
+
+### What We Learned
+- Deploying local docker images to ECR
+- A high level overview of terraform files
+- Networking - VPCs, Internet Gateways, private subnets and public subnets
+- SSM for saving secrets and pulling into terraform
